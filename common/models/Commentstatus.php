@@ -13,7 +13,7 @@ use Yii;
  *
  * @property Comment[] $comments
  */
-class Comentstatus extends \yii\db\ActiveRecord
+class Commentstatus extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
