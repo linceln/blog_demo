@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Post */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '文章管理', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="post-view">
@@ -15,11 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('更新', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('删除', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '您确定要删除这篇文章吗？',
                 'method' => 'post',
             ],
         ]) ?>
@@ -27,15 +27,33 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= DetailView::widget([
         'model' => $model,
+        'template' => '<tr><th style="width: 100px;">{label}</th><td>{value}</td></tr>',
         'attributes' => [
             'id',
             'title',
-            'content:ntext',
             'tags:ntext',
-            'status',
-            'create_time:datetime',
-            'update_time:datetime',
-            'author_id',
+//            'status',
+            [
+                'attribute' => 'status',
+                'value' => $model->status0->name,
+            ],
+//            'create_time:datetime',
+            [
+                'attribute' => 'create_time',
+                'value' => date('Y-h-d H:i:s', $model->create_time),
+            ],
+//            'update_time:datetime',
+            [
+                'attribute' => 'update_time',
+                'value' => date('Y-h-d H:i:s', $model->create_time),
+            ],
+//            'author_id',
+            [
+                'attribute' => 'author_id',
+                'value' => $model->author->nickname,
+
+            ],
+            'content:html',
         ],
     ]) ?>
 
