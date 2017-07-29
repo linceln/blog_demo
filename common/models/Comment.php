@@ -20,6 +20,7 @@ use Yii;
  * @property Post $post
  * @property Commentstatus $status0
  * @property User $user
+ * @property Remindstatus $remind0
  */
 class Comment extends \yii\db\ActiveRecord
 {
@@ -54,14 +55,14 @@ class Comment extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'content' => 'Content',
-            'status' => 'Status',
-            'create_time' => 'Create Time',
-            'userid' => 'Userid',
-            'email' => 'Email',
-            'url' => 'Url',
-            'post_id' => 'Post ID',
-            'remind' => 'Remind',
+            'content' => '内容',
+            'status' => '状态',
+            'create_time' => '创建时间',
+            'userid' => '用户',
+            'email' => '邮箱',
+            'url' => '链接',
+            'post_id' => '文章',
+            'remind' => '已通知',
         ];
     }
 
@@ -87,5 +88,13 @@ class Comment extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'userid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRemind0()
+    {
+        return $this->hasOne(Remindstatus::className(), ['id' => 'remind']);
     }
 }
