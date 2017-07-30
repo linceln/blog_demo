@@ -57,7 +57,7 @@ class Post extends \yii\db\ActiveRecord
             'tags' => '标签',
             'status' => '状态',
             'create_time' => '创建时间',
-            'update_time' => '更新时间',
+            'update_time' => '修改时间',
             'author_id' => '作者',
         ];
     }
@@ -84,5 +84,15 @@ class Post extends \yii\db\ActiveRecord
     public function getStatus0()
     {
         return $this->hasOne(Poststatus::className(), ['id' => 'status']);
+    }
+
+    public function beforeSave($insert)
+    {
+        // 自动更新创建时间和修改时间
+        if ($insert) {
+            $this->create_time = time();
+        }
+        $this->update_time = time();
+        return parent::beforeSave($insert);
     }
 }

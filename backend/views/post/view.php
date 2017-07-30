@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'update_time:datetime',
             [
                 'attribute' => 'update_time',
-                'value' => date('Y-h-d H:i:s', $model->create_time),
+                'value' => date('Y-h-d H:i:s', $model->update_time),
             ],
 //            'author_id',
             [
