@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\Poststatus;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\PostSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Posts';
+$this->title = '文章管理';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="post-index">
@@ -16,22 +17,43 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Post', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('新增文章', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            [
+                'attribute' => 'id',
+                'contentOptions' => ['width' => '30px'],
+            ],
             'title',
-            'content:ntext',
+            [
+//                'attribute' => 'author_id',
+                'attribute' => 'author_name',
+                'label' => '作者',
+                'value' => 'author.nickname'
+            ],
             'tags:ntext',
-            'status',
-            // 'create_time:datetime',
-            // 'update_time:datetime',
-            // 'author_id',
+            [
+                'attribute' => 'status',
+                'value' => 'status0.name',
+                'contentOptions' => ['width' => '100px'],
+                'filter' => Poststatus::find()
+                    ->select('name')
+                    ->indexBy('id')
+                    ->column(),
+            ],
+//            [
+//                'attribute' => 'create_time',
+//                'format' => ['date', 'php:Y-m-d H:i:s'],
+//            ],
+            [
+                'attribute' => 'update_time',
+                'format' => ['date', 'php:Y-m-d H:i:s'],
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

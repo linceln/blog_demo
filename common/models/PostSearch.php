@@ -12,6 +12,12 @@ use common\models\Post;
  */
 class PostSearch extends Post
 {
+
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['author_name']);
+    }
+
     /**
      * @inheritdoc
      */
@@ -19,7 +25,7 @@ class PostSearch extends Post
     {
         return [
             [['id', 'status', 'create_time', 'update_time', 'author_id'], 'integer'],
-            [['title', 'content', 'tags'], 'safe'],
+            [['title', 'content', 'tags', 'author_name'], 'safe'],
         ];
     }
 
@@ -47,13 +53,26 @@ class PostSearch extends Post
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            // 分页
+            'pagination' => ['pageSize' => 10],
+            'sort' => [
+                // 默认排序的字段
+                'defaultOrder' => [
+                    'update_time' => SORT_DESC
+                ],
+                // 需要排序的字段
+//                'attributes' => [
+//                    'id',
+//                    'create_time'
+//                ]
+            ],
         ]);
 
         $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
@@ -69,6 +88,16 @@ class PostSearch extends Post
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'content', $this->content])
             ->andFilterWhere(['like', 'tags', $this->tags]);
+
+        // 建立表连接
+        $query->join('INNER JOIN', 'adminuser', 'post.author_id = adminuser.id')
+            ->andFilterWhere(['like', 'adminuser.nickname', $this->author_name]);
+
+        // 添加需要排序的字段
+        $dataProvider->sort->attributes['author_name'] = [
+            'asc' => ['adminuser.nickname' => SORT_ASC],
+            'desc' => ['adminuser.nickname' => SORT_DESC],
+        ];
 
         return $dataProvider;
     }
