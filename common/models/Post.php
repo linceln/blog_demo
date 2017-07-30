@@ -22,6 +22,8 @@ use Yii;
  */
 class Post extends \yii\db\ActiveRecord
 {
+    private $_oldTagsString;
+
     /**
      * @inheritdoc
      */
@@ -94,5 +96,23 @@ class Post extends \yii\db\ActiveRecord
         }
         $this->update_time = time();
         return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        Tag::updateFrequency($this->_oldTagsString, $this->tags);
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        Tag::updateFrequency($this->tags, '');
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->_oldTagsString = $this->tags;
     }
 }
