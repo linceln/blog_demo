@@ -12,6 +12,12 @@ use common\models\Comment;
  */
 class CommentSearch extends Comment
 {
+
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['user.username', 'post.title']);
+    }
+
     /**
      * @inheritdoc
      */
@@ -19,7 +25,7 @@ class CommentSearch extends Comment
     {
         return [
             [['id', 'status', 'create_time', 'userid', 'post_id', 'remind'], 'integer'],
-            [['content', 'email', 'url'], 'safe'],
+            [['content', 'email', 'url', 'user.username', 'post.title'], 'safe'],
         ];
     }
 
@@ -47,6 +53,13 @@ class CommentSearch extends Comment
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => ['pageSize' => 10],
+            'sort' => [
+                'defaultOrder' => [
+                    'status' => SORT_ASC,
+                    'id' => SORT_DESC
+                ]
+            ]
         ]);
 
         $this->load($params);
@@ -60,16 +73,44 @@ class CommentSearch extends Comment
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
+            'comment.status' => $this->status,
             'create_time' => $this->create_time,
             'userid' => $this->userid,
             'post_id' => $this->post_id,
             'remind' => $this->remind,
         ]);
 
-        $query->andFilterWhere(['like', 'content', $this->content])
+        $query->andFilterWhere(['like', 'comment.content', $this->content])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'url', $this->url]);
+
+//        $query->with('user')
+//            ->andFilterWhere(['like', 'user.username', $this->getAttribute('user.username')]);
+
+        // 建立表连接
+        $query->joinWith('user', true, 'INNER JOIN')
+            ->andFilterWhere(['like', 'user.username', $this->getAttribute('user.username')]);
+
+
+        $query->joinWith('post', true, 'INNER JOIN')
+            ->andFilterWhere(['like', 'post.title', $this->getAttribute('post.title')]);
+
+//        $query->innerJoin('user', 'comment.userid = user.id')
+//            ->andFilterWhere(['like', 'user.username', $this->getAttribute('user.username')]);
+//
+//        $query->innerJoin('post', 'comment.post_id = post.id')
+//            ->andFilterWhere(['like', 'post.title', $this->getAttribute('post.title')]);
+
+        // 添加需要排序的字段
+        $dataProvider->sort->attributes['user.username'] = [
+            'asc' => ['user.username' => SORT_ASC],
+            'desc' => ['user.username' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['post.title'] = [
+            'asc' => ['post.title' => SORT_ASC],
+            'desc' => ['post.title' => SORT_DESC],
+        ];
 
         return $dataProvider;
     }

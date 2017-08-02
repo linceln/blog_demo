@@ -62,7 +62,7 @@ class Comment extends \yii\db\ActiveRecord
             'email' => '邮箱',
             'url' => '链接',
             'post_id' => '文章',
-            'remind' => '已通知',
+            'remind' => '通知',
         ];
     }
 
@@ -97,4 +97,14 @@ class Comment extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Remindstatus::className(), ['id' => 'remind']);
     }
+
+    public function getShortContent()
+    {
+        $content = $this->content;
+        $str = strip_tags($content);
+        $strLen = mb_strlen($str);
+
+        return mb_substr($str, 0, 10, 'utf-8') . ($strLen > 10 ? '...' : '');
+    }
+
 }
