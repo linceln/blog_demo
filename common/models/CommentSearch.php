@@ -5,17 +5,17 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Comment;
 
 /**
  * CommentSearch represents the model behind the search form about `common\models\Comment`.
  */
 class CommentSearch extends Comment
 {
+    public $username;
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['user.username', 'post.title']);
+        return array_merge(parent::attributes(), ['post.title']);
     }
 
     /**
@@ -25,7 +25,7 @@ class CommentSearch extends Comment
     {
         return [
             [['id', 'status', 'create_time', 'userid', 'post_id', 'remind'], 'integer'],
-            [['content', 'email', 'url', 'user.username', 'post.title'], 'safe'],
+            [['content', 'email', 'url', 'username', 'post.title'], 'safe'],
         ];
     }
 
@@ -66,7 +66,7 @@ class CommentSearch extends Comment
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
@@ -84,27 +84,17 @@ class CommentSearch extends Comment
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'url', $this->url]);
 
-//        $query->with('user')
-//            ->andFilterWhere(['like', 'user.username', $this->getAttribute('user.username')]);
-
         // 建立表连接
         $query->joinWith('user', true, 'INNER JOIN')
             ->andFilterWhere(['like', 'user.username', $this->getAttribute('user.username')]);
 
-
         $query->joinWith('post', true, 'INNER JOIN')
             ->andFilterWhere(['like', 'post.title', $this->getAttribute('post.title')]);
 
-//        $query->innerJoin('user', 'comment.userid = user.id')
-//            ->andFilterWhere(['like', 'user.username', $this->getAttribute('user.username')]);
-//
-//        $query->innerJoin('post', 'comment.post_id = post.id')
-//            ->andFilterWhere(['like', 'post.title', $this->getAttribute('post.title')]);
-
         // 添加需要排序的字段
-        $dataProvider->sort->attributes['user.username'] = [
-            'asc' => ['user.username' => SORT_ASC],
-            'desc' => ['user.username' => SORT_DESC],
+        $dataProvider->sort->attributes['username'] = [
+            'asc' => ['username' => SORT_ASC],
+            'desc' => ['username' => SORT_DESC],
         ];
 
         $dataProvider->sort->attributes['post.title'] = [
