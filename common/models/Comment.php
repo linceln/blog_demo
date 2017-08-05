@@ -107,4 +107,9 @@ class Comment extends \yii\db\ActiveRecord
         return mb_substr($str, 0, 10, 'utf-8') . ($strLen > 10 ? '...' : '');
     }
 
+    public function beforeSave($insert)
+    {
+        $this->create_time = time();
+        return parent::beforeSave($insert);
+    }
 }
