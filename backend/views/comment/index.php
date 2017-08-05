@@ -32,18 +32,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
 //                'attribute' => 'userid',
-                'attribute' => 'username',
+                'attribute' => 'user.username',
                 'label' => '用户',
-                'value' => function ($model) {
-                    return isset($model->user->username) ? $model->user->username : '';
-                }
+                'value' => 'user.username'
             ],
             [
                 'attribute' => 'status',
                 'value' => 'status0.name',
                 'contentOptions' => ['width' => '100px'],
                 'filter' => Commentstatus::find()
-                  ->select('name')
+                    ->select('name')
                     ->indexBy('id')
                     ->column()
             ],

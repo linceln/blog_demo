@@ -2,7 +2,6 @@
 
 namespace common\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -11,11 +10,10 @@ use yii\data\ActiveDataProvider;
  */
 class CommentSearch extends Comment
 {
-    public $username;
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['post.title']);
+        return array_merge(parent::attributes(), ['user.username', 'post.title']);
     }
 
     /**
@@ -25,7 +23,7 @@ class CommentSearch extends Comment
     {
         return [
             [['id', 'status', 'create_time', 'userid', 'post_id', 'remind'], 'integer'],
-            [['content', 'email', 'url', 'username', 'post.title'], 'safe'],
+            [['content', 'email', 'url', 'user.username', 'post.title'], 'safe'],
         ];
     }
 
