@@ -112,4 +112,20 @@ class Comment extends \yii\db\ActiveRecord
         $this->create_time = time();
         return parent::beforeSave($insert);
     }
+
+    public function approve()
+    {
+        $this->status = 2;
+        return $this->save();
+    }
+
+    /**
+     * 待审核评论条数
+     * @return int|string
+     */
+    public static function getPendingCommentCount()
+    {
+        return Comment::find()->where('status = 1')->count();
+    }
+
 }

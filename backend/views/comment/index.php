@@ -39,7 +39,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'value' => 'status0.name',
-                'contentOptions' => ['width' => '100px'],
+                'contentOptions' => function ($model) {
+
+                    if ($model->status == 1) {
+
+                        return ['class' => 'bg-info', 'width' => '100px'];
+                    } else {
+
+                        return ['width' => '100px'];
+                    }
+                },
                 'filter' => Commentstatus::find()
                     ->select('name')
                     ->indexBy('id')
@@ -60,7 +69,23 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'url:url',
             // 'remind',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}{update}{delete}{approve}',
+                'buttons' => [
+                    'approve' => function ($url, $model, $key) {
+
+                        $options = [
+                            'title' => Yii::t('yii', "审核"),
+                            'aria-label' => Yii::t('yii', "审核"),
+                            'data-confirm' => Yii::t('yii', '确定通过这条评论吗？'),
+                            'data-method' => 'post',
+                            'data-ajax' => '0'];
+
+                        return Html::a('<span class="glyphicon glyphicon-check" aria-hidden="true"></span>', $url, $options);
+                    }
+                ],
+            ],
         ],
     ]); ?>
 </div>

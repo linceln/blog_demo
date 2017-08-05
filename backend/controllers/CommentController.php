@@ -107,6 +107,21 @@ class CommentController extends Controller
     }
 
     /**
+     * Approve an existing Comment
+     * @param integer $id
+     * @return \yii\web\Response
+     */
+    public function actionApprove($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->approve()) {
+
+            return $this->redirect(['index']);
+        }
+    }
+
+    /**
      * Finds the Comment model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
