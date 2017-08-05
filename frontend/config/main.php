@@ -11,8 +11,10 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'language' => 'zh-CN',
     'components' => [
         'request' => [
+            'cookieValidationKey' => 'mibwVB96DmZw55hQYMi0bOA9Yvex9gkW',
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
@@ -23,6 +25,7 @@ return [
         'session' => [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend',
+            'savePath' => sys_get_temp_dir()
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

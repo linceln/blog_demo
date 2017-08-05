@@ -9,22 +9,24 @@ $params = array_merge(
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
-    'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
+    'controllerNamespace' => 'backend\controllers',
     'language' => "zh-CN",
     'modules' => [],
     'components' => [
         'request' => [
+            'cookieValidationKey' => 'BSF81-AMFgJNdiJMx3WNuu0eRvZdN7Q5',
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\Adminuser',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
+            'savePath' => sys_get_temp_dir()
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
