@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\AdminuserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Adminusers';
+$this->title = '管理员';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="adminuser-index">
@@ -16,23 +16,27 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Adminuser', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('新增管理员', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'username',
-            'nickname',
-            'password',
+            [
+                'attribute' => 'id',
+                'contentOptions' => ['width' => '100px'],
+            ],
+            [
+                'attribute' => 'username',
+                'contentOptions' => ['width' => '200px'],
+            ],
+            [
+                'attribute' => 'nickname',
+                'contentOptions' => ['width' => '200px'],
+            ],
             'email:email',
-            // 'profile:ntext',
-            // 'auth_key',
-            // 'password_hash',
-            // 'password_reset_token',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
