@@ -37,9 +37,9 @@ class Adminuser extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'nickname', 'password', 'email', 'auth_key', 'password_hash'], 'required'],
+            [['username', 'nickname', 'email', 'auth_key', 'password_hash'], 'required'],
             [['profile'], 'string'],
-            [['username', 'nickname', 'password', 'email'], 'string', 'max' => 128],
+            [['username', 'nickname', 'email'], 'string', 'max' => 128],
             [['auth_key'], 'string', 'max' => 32],
             [['password_hash', 'password_reset_token'], 'string', 'max' => 255],
         ];

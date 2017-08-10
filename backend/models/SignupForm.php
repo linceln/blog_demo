@@ -15,7 +15,20 @@ class SignupForm extends Model
     public $email;
     public $profile;
     public $password;
+    public $passwordRepeat;
 
+    public function attributeLabels()
+    {
+        return [
+
+            'username' => '用户名',
+            'nickname' => '昵称',
+            'email' => '邮箱',
+            'profile' => '资料',
+            'password' => '密码',
+            'passwordRepeat' => '确认密码',
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -35,14 +48,19 @@ class SignupForm extends Model
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\Adminuser', 'message' => '该邮箱已经存在'],
+            ['email', 'string', 'max' => 255],
 
             ['profile', 'trim'],
             ['profile', 'string', 'max' => 255],
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+
+            ['passwordRepeat', 'required'],
+            ['passwordRepeat', 'string', 'min' => 6],
+
+            ['passwordRepeat', 'compare', 'compareAttribute' => 'password']
         ];
     }
 
