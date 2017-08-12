@@ -66,14 +66,10 @@ class AdminuserController extends Controller
     {
         $model = new SignupForm();
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $adminuser = $model->signup()) {
 
-            $adminuser = $model->signup();
+            return $this->redirect(['view', 'id' => $adminuser->id]);
 
-            if ($adminuser) {
-
-                return $this->redirect(['view', 'id' => 6]);
-            }
         } else {
 
             return $this->render('create', [
