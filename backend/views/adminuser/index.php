@@ -38,7 +38,35 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'email:email',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'contentOptions' => ['width' => '5%'],
+                'template' => '{view} {update} {password} {authorize}',
+                'buttons' => [
+                    'authorize' => function ($url, $model, $key) {
+
+                        $options = [
+                            'title' => Yii::t('yii', "授权"),
+                            'aria-label' => Yii::t('yii', "授权"),
+                            'data-method' => 'post',
+                            'data-ajax' => '0'
+                        ];
+
+                        return Html::a('<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>', $url, $options);
+                    },
+
+                    'password' => function($url, $model, $key){
+                        $options = [
+                            'title' => Yii::t('yii', "修改密码"),
+                            'aria-label' => Yii::t('yii', "修改密码"),
+                            'data-method' => 'post',
+                            'data-ajax' => '0'
+                        ];
+
+                        return Html::a('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>', $url, $options);
+                    }
+                ]
+            ],
         ],
     ]); ?>
 </div>

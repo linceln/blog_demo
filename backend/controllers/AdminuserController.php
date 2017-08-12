@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\ResetPasswordForm;
 use backend\models\SignupForm;
 use Yii;
 use common\models\Adminuser;
@@ -108,6 +109,27 @@ class AdminuserController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionAuthorize()
+    {
+        return $this->render('authorize');
+    }
+
+    public function actionPassword($id)
+    {
+        $model = new ResetPasswordForm();
+        $model->fillData($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->resetPassword($id)) {
+
+            return $this->redirect(['view', 'id' => $id]);
+        } else {
+
+            return $this->render('resetPassword', [
+                'model' => $model
+            ]);
+        }
     }
 
     /**

@@ -71,7 +71,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}  {update}  {delete} {approve}',
+                'contentOptions' => ['width' => '5%'],
+                'template' => '{view}  {update} {approve} {delete}',
                 'buttons' => [
                     'approve' => function ($url, $model, $key) {
 
@@ -82,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-method' => 'post',
                             'data-ajax' => '0'];
 
-                        return Html::a('<span class="glyphicon glyphicon-check" aria-hidden="true"></span>', $url, $options);
+                        return Html::a('<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>', $url, $options);
                     }
                 ],
             ],
