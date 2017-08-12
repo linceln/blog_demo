@@ -12,7 +12,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="adminuser-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'id',
+            'nickname',
+            'email:email',
+            'profile:ntext',
+        ],
+    ]) ?>
 
     <p>
         <?= Html::a('修改资料', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -24,15 +32,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'nickname',
-            'email:email',
-            'profile:ntext',
-        ],
-    ]) ?>
 
 </div>

@@ -18,7 +18,7 @@ use common\models\User;
     ) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? '新增用户' : '修改用户', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton('保存', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -16,7 +16,6 @@ use common\models\User;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'status')
         ->dropDownList(Commentstatus::find()
@@ -45,8 +44,10 @@ use common\models\User;
             ->select('name')
             ->column()) ?>
 
+    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? '新增评论' : '更新评论', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? '新增评论' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

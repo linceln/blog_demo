@@ -8,18 +8,20 @@ use yii\widgets\DetailView;
 
 $this->title = $model->post->title;
 $this->params['breadcrumbs'][] = ['label' => '评论管理', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = "查看评论";
 ?>
 <div class="comment-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
 
     <?= DetailView::widget([
         'model' => $model,
         'template' => '<tr><th style="width: 100px">{label}</th><td>{value}</td></tr>',
         'attributes' => [
             'id',
+            [
+                'attribute' => 'title',
+                'label' => '标题',
+                'value' => $model->post->title,
+            ],
             [
                 'attribute' => 'status',
                 'value' => $model->status0->name,
@@ -49,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <p>
-        <?= Html::a('更新', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('修改评论', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [

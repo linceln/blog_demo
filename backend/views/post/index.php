@@ -13,12 +13,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="post-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
         <?= Html::a('新增文章', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -31,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'title',
             [
-//                'attribute' => 'author_id',
                 'attribute' => 'author_name',
                 'label' => '作者',
                 'value' => 'author.nickname'
@@ -46,16 +43,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     ->indexBy('id')
                     ->column(),
             ],
-//            [
-//                'attribute' => 'create_time',
-//                'format' => ['date', 'php:Y-m-d H:i:s'],
-//            ],
             [
                 'attribute' => 'update_time',
                 'format' => ['date', 'php:Y-m-d H:i:s'],
             ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'contentOptions' => ['width' => '5%']
+            ],
         ],
     ]); ?>
 </div>

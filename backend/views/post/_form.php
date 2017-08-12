@@ -16,10 +16,6 @@ use common\models\Adminuser;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'tags')->textarea(['rows' => 6]) ?>
-
     <?php
     // 第一种方法
     //    $postStatuses = Poststatus::find()->all();
@@ -33,15 +29,15 @@ use common\models\Adminuser;
     //        ->column();
 
     // 第三种方法
-//    $allStatuses = Adminuser::find()
-//        ->select(['nickname'])
-//        ->indexBy('id')
-//        ->column();
-//
-//    echo '<pre>';
-//    print_r($allStatuses);
-//    echo '</pre>';
-//    exit(0);
+    //    $allStatuses = Adminuser::find()
+    //        ->select(['nickname'])
+    //        ->indexBy('id')
+    //        ->column();
+    //
+    //    echo '<pre>';
+    //    print_r($allStatuses);
+    //    echo '</pre>';
+    //    exit(0);
     ?>
 
     <!-- 状态下拉列表-->
@@ -57,6 +53,10 @@ use common\models\Adminuser;
             ->select(['nickname'])
             ->indexBy('id')
             ->column()) ?>
+
+    <?= $form->field($model, 'tags')->textInput(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '新增' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

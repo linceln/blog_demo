@@ -13,7 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -38,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             [
                 'class' => 'yii\grid\ActionColumn',
+                'contentOptions' => ['width' => '1%'],
                 'template' => '{update}'
             ],
 
