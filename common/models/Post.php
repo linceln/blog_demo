@@ -38,7 +38,7 @@ class Post extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'content', 'status', 'author_id'], 'required'],
+            [['title', 'content', 'status'], 'required'],
             [['content', 'tags'], 'string'],
             [['status', 'create_time', 'update_time', 'author_id'], 'integer'],
             [['title'], 'string', 'max' => 128],
@@ -80,6 +80,11 @@ class Post extends \yii\db\ActiveRecord
         return $this->hasOne(Adminuser::className(), ['id' => 'author_id']);
     }
 
+//    public function getAdminuser()
+//    {
+//        return $this->hasOne(Adminuser::className(), ['id' => 'author_id']);
+//    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -93,6 +98,7 @@ class Post extends \yii\db\ActiveRecord
         // 自动更新创建时间和修改时间
         if ($insert) {
             $this->create_time = time();
+            $this->author_id = Yii::$app->user->id;
         }
         $this->update_time = time();
         return parent::beforeSave($insert);

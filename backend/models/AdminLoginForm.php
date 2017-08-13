@@ -52,7 +52,7 @@ class AdminLoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getAdminuser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, '用户名或密码错误❌');
+                $this->addError($attribute, '用户名或密码错误');
             }
         }
     }

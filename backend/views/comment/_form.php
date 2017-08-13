@@ -16,33 +16,20 @@ use common\models\User;
 
     <?php $form = ActiveForm::begin(); ?>
 
-
     <?= $form->field($model, 'status')
-        ->dropDownList(Commentstatus::find()
+        ->radioList(Commentstatus::find()
             ->select('name')
             ->indexBy('id')
             ->column()) ?>
 
-    <?= $form->field($model, 'userid')
-        ->dropDownList(User::find()
-            ->select('username')
-            ->indexBy('id')
+    <?= $form->field($model, 'remind')
+        ->radioList(Remindstatus::find()
+            ->select('name')
             ->column()) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'post_id')
-        ->dropDownList(Post::find()
-            ->select('title')
-            ->indexBy('id')
-            ->column()) ?>
-
-    <?= $form->field($model, 'remind')
-        ->dropDownList(Remindstatus::find()
-            ->select('name')
-            ->column()) ?>
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 

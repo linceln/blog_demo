@@ -18,28 +18,25 @@ $this->params['breadcrumbs'][] = '文章详情';
         'attributes' => [
             'id',
             'title',
-            'tags:ntext',
-//            'status',
-            [
-                'attribute' => 'status',
-                'value' => $model->status0->name,
-            ],
-//            'create_time:datetime',
-            [
-                'attribute' => 'create_time',
-                'value' => date('Y-h-d H:i:s', $model->create_time),
-            ],
-//            'update_time:datetime',
-            [
-                'attribute' => 'update_time',
-                'value' => date('Y-h-d H:i:s', $model->update_time),
-            ],
-//            'author_id',
             [
                 'attribute' => 'author_id',
                 'value' => $model->author->nickname,
 
             ],
+            'tags:ntext',
+            [
+                'attribute' => 'status',
+                'value' => $model->status0->name,
+            ],
+            [
+                'attribute' => 'create_time',
+                'value' => date('Y-h-d H:i:s', $model->create_time),
+            ],
+            [
+                'attribute' => 'update_time',
+                'value' => date('Y-h-d H:i:s', $model->update_time),
+            ],
+
             'content:html',
         ],
     ]) ?>

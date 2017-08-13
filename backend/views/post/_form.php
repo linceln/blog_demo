@@ -40,26 +40,29 @@ use common\models\Adminuser;
     //    exit(0);
     ?>
 
-    <!-- 状态下拉列表-->
+    <!-- 全部可选状态列表-->
     <?= $form->field($model, 'status')
-        ->dropDownList(Poststatus::find()
+        ->radioList(Poststatus::find()
             ->select(['name'])
             ->indexBy('id')
-            ->column()) ?>
+            ->column())
+    ?>
 
     <!-- 作者下拉列表-->
-    <?= $form->field($model, 'author_id')
-        ->dropDownList(Adminuser::find()
-            ->select(['nickname'])
-            ->indexBy('id')
-            ->column()) ?>
+    <?php
+    //        $form->field($model, 'author_id')
+    //            ->dropDownList(Adminuser::find()
+    //                ->select(['nickname'])
+    //                ->indexBy('id')
+    //                ->column())
+    ?>
 
     <?= $form->field($model, 'tags')->textInput(['rows' => 6]) ?>
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? '新增' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? '保存' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

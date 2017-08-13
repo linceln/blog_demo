@@ -39,12 +39,12 @@ AppAsset::register($this);
     $menuItems = [
         ['label' => '文章管理', 'url' => ['/post/index']],
         ['label' => '评论管理', 'url' => ['/comment/index']],
-        '<li><span class="badge">'.Comment::getPendingCommentCount().'</span></li>',
+        '<li><span class="badge">' . Comment::getPendingCommentCount() . '</span></li>',
         ['label' => '用户管理', 'url' => ['/user/index']],
         ['label' => '管理员', 'url' => ['/adminuser/index']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => '登录', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => '登录', 'url' => ['/site/index']];
     } else {
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
@@ -73,7 +73,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy; LINCE <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>

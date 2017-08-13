@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "comment".
@@ -22,7 +24,7 @@ use Yii;
  * @property User $user
  * @property Remindstatus $remind0
  */
-class Comment extends \yii\db\ActiveRecord
+class Comment extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -125,7 +127,17 @@ class Comment extends \yii\db\ActiveRecord
      */
     public static function getPendingCommentCount()
     {
-        return Comment::find()->where('status = 1')->count();
+        return Comment::find()
+            ->joinWith([
+                'post' => function (ActiveQuery $query) {
+
+                    $query->join('INNER JOIN', 'adminuser', 'post.author_id = adminuser.id')
+                        ->andWhere(['adminuser.id' => Yii::$app->user->id]);
+
+                }
+            ], true, 'INNER JOIN')
+            ->where('comment.status = 1')
+            ->count();
     }
 
 }

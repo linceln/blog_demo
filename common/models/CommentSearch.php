@@ -2,18 +2,22 @@
 
 namespace common\models;
 
+use function foo\func;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 
 /**
  * CommentSearch represents the model behind the search form about `common\models\Comment`.
  */
 class CommentSearch extends Comment
 {
+    const AUTHOR_NAME = 'post.author.nickname';
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['user.username', 'post.title']);
+        return array_merge(parent::attributes(), ['user.username', 'post.title', CommentSearch::AUTHOR_NAME]);
     }
 
     /**
@@ -23,7 +27,7 @@ class CommentSearch extends Comment
     {
         return [
             [['id', 'status', 'create_time', 'userid', 'post_id', 'remind'], 'integer'],
-            [['content', 'email', 'url', 'user.username', 'post.title'], 'safe'],
+            [['content', 'email', 'url', 'user.username', 'post.title', CommentSearch::AUTHOR_NAME], 'safe'],
         ];
     }
 
@@ -89,8 +93,19 @@ class CommentSearch extends Comment
         $query->joinWith('post', true, 'INNER JOIN')
             ->andFilterWhere(['like', 'post.title', $this->getAttribute('post.title')]);
 
+        $query->joinWith([
+            'post' => function (ActiveQuery $query) {
+
+//                $query->joinWith('adminuser', true, 'INNER JOIN')
+                $query->join('INNER JOIN', 'adminuser', 'post.author_id = adminuser.id')
+                        ->andFilterWhere(['like', 'adminuser.nickname', $this->getAttribute(CommentSearch::AUTHOR_NAME)])
+                    ->andWhere(['adminuser.id' => Yii::$app->user->id]);
+
+            }
+        ], true, 'INNER JOIN');
+
         // 添加需要排序的字段
-        $dataProvider->sort->attributes['username'] = [
+        $dataProvider->sort->attributes['user.username'] = [
             'asc' => ['username' => SORT_ASC],
             'desc' => ['username' => SORT_DESC],
         ];
@@ -98,6 +113,11 @@ class CommentSearch extends Comment
         $dataProvider->sort->attributes['post.title'] = [
             'asc' => ['post.title' => SORT_ASC],
             'desc' => ['post.title' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes[CommentSearch::AUTHOR_NAME] = [
+            'asc' => [CommentSearch::AUTHOR_NAME => SORT_ASC],
+            'desc' => [CommentSearch::AUTHOR_NAME => SORT_DESC],
         ];
 
         return $dataProvider;
