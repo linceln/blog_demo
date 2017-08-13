@@ -2,6 +2,7 @@
 
 namespace console\controllers;
 
+use common\models\Adminuser;
 use Yii;
 use yii\console\Controller;
 
@@ -24,23 +25,25 @@ class RbacController extends Controller
         // 添加 "deletePost" 权限
         $deletePost = $auth->createPermission('deletePost');
         $deletePost->description = '删除文章';
+        $auth->add($deletePost);
 
         // 添加 "author" 角色并赋予 "createPost" 权限
         $author = $auth->createRole('author');
+        $author->description = '作者';
         $auth->add($author);
         $auth->addChild($author, $createPost);
 
         // 添加 "admin" 角色并赋予 "updatePost"
         // 和 "author" 权限
         $admin = $auth->createRole('admin');
+        $admin->description = '管理员';
         $auth->add($admin);
         $auth->addChild($admin, $updatePost);
         $auth->addChild($admin, $deletePost);
         $auth->addChild($admin, $author);
 
-        // 为用户指派角色。其中 1 和 2 是由 IdentityInterface::getId() 返回的id （译者注：user表的id）
-        // 通常在你的 User 模型中实现这个函数。
-        $auth->assign($author, 2);
-        $auth->assign($admin, 1);
+        foreach (Adminuser::findAllAdminUser() as $user) {
+            $auth->assign($author, $user->id);
+        }
     }
 }

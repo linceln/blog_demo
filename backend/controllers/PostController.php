@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 /**
  * PostController implements the CRUD actions for Post model.
@@ -95,9 +96,14 @@ class PostController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
+     * @throws ForbiddenHttpException
      */
     public function actionUpdate($id)
     {
+        if (!Yii::$app->user->can('updatePost')) {
+            throw new ForbiddenHttpException("您没有执行此项操作的权限");
+        }
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -114,9 +120,14 @@ class PostController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws ForbiddenHttpException
      */
     public function actionDelete($id)
     {
+        if (!Yii::$app->user->can('deletePost')) {
+            throw new ForbiddenHttpException("您没有执行此项操作的权限");
+        }
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

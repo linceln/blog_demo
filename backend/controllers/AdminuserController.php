@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use backend\models\ResetPasswordForm;
 use backend\models\SignupForm;
+use common\models\AuthAssignment;
+use common\models\AuthItem;
 use Yii;
 use common\models\Adminuser;
 use common\models\AdminuserSearch;
@@ -113,11 +115,46 @@ class AdminuserController extends Controller
 
     /**
      * 授权
-     * @return string
+     * @param $id
+     * @return string|\yii\web\Response
      */
-    public function actionAuthorize()
+    public function actionAuthorize($id)
     {
-        return $this->render('authorize');
+        $allRoles = AuthItem::find()
+            ->select(['description'])
+            ->where(['type' => 1])
+            ->indexBy('name')
+            ->orderBy(['name' => SORT_DESC])
+            ->column();
+
+        $currentRoles = AuthAssignment::find()
+            ->select('item_name')
+            ->where(['user_id' => $id])
+            ->column();
+
+
+        if (isset($_POST['role'])) {
+
+            AuthAssignment::deleteAll(['user_id' => $id]);
+
+            $roles = $_POST['role'];
+            foreach ($roles as $role) {
+
+                $assignment = new AuthAssignment();
+                $assignment->item_name = $role;
+                $assignment->user_id = $id;
+                $assignment->created_at = time();
+                $assignment->save();
+            }
+            return $this->redirect('index');
+
+        }
+
+        return $this->render('authorize', [
+            'username' => Adminuser::find()->where(['id' => $id])->one()->username,
+            'currentRoles' => $currentRoles,
+            'allRoles' => $allRoles
+        ]);
     }
 
     /**

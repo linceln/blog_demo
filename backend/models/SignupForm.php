@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use Yii;
 use yii\base\Model;
 use common\models\Adminuser;
 
@@ -82,7 +83,21 @@ class SignupForm extends Model
         $adminuser->profile = $this->profile;
         $adminuser->setPassword($this->password);
         $adminuser->generateAuthKey();
+        $adminuser->save();
 
-        return $adminuser->save() ? $adminuser : null;
+        if ($adminuser) {
+
+            $authManager = Yii::$app->authManager;
+            $role = $authManager->getRole('author');
+            $authManager->assign($role, $adminuser->id);
+
+            return $adminuser;
+
+        } else {
+
+            return null;
+
+        }
+
     }
 }

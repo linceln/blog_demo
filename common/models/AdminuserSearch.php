@@ -50,7 +50,7 @@ class AdminuserSearch extends Adminuser
             'pagination' => ['pageSize' => 10],
             'sort' => [
                 'defaultOrder' => [
-                    'id' => SORT_ASC
+                    'id' => SORT_DESC
                 ]
             ]
         ]);

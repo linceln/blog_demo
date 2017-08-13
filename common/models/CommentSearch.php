@@ -98,7 +98,7 @@ class CommentSearch extends Comment
 
 //                $query->joinWith('adminuser', true, 'INNER JOIN')
                 $query->join('INNER JOIN', 'adminuser', 'post.author_id = adminuser.id')
-                        ->andFilterWhere(['like', 'adminuser.nickname', $this->getAttribute(CommentSearch::AUTHOR_NAME)])
+                    ->andFilterWhere(['like', 'adminuser.nickname', $this->getAttribute(CommentSearch::AUTHOR_NAME)])
                     ->andWhere(['adminuser.id' => Yii::$app->user->id]);
 
             }

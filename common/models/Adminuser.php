@@ -71,6 +71,16 @@ class Adminuser extends ActiveRecord implements IdentityInterface
         return $this->hasMany(Post::className(), ['author_id' => 'id']);
     }
 
+    public static function findAllAdminUser()
+    {
+
+        return static::find()->select('id')->all();
+
+//        var_dump(static::find()->select('id')->all());
+//        exit(0);
+
+    }
+
     /**
      * @inheritdoc
      */
